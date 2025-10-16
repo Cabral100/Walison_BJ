@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <title>Portfólio Walinson - Vendedor | BJ Esquadrias</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.2/css/all.css">
+    
+    <style>
+        /* --- CONFIGURAÇÕES GLOBAIS E VARIÁVEIS DE COR --- */
+        :root {
+            --color-orange: #F37A20; /* Cor exata do logo */
+            --color-black: #111111;  /* Cor exata do logo */
+            --color-dark-gray: #2c2c2c;
+            --color-light-gray: #f4f4f4;
+            --color-text: #333;
+            --color-white: #FFFFFF;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--color-light-gray); color: var(--color-text); font-family: var(--font-body); line-height: 1.6; overflow-x: hidden; }
+        body.no-scroll { overflow: hidden; }
+
+        /* --- NOVA PÁGINA DE LOADING --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-white);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.7s ease, visibility 0.7s ease;
+            visibility: visible;
+            opacity: 1;
+        }
+        #preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .preloader-logo {
+            max-width: 250px;
+            width: 60%;
+            animation: pulse-logo 1.5s infinite ease-in-out;
+        }
+        @keyframes pulse-logo {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- ANIMAÇÕES DE SCROLL --- */
+        .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; will-change: opacity, transform; }
+        .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+        .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
+        .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
+        .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
+
+        /* --- HEADER (CABEÇALHO) --- */
+        .site-header { position: fixed; top: 0; left: 0; right: 0; background: var(--color-white); z-index: 1000; padding: 0.5rem 2rem; transition: background-color 0.3s ease, box-shadow 0.3s ease; }
+        .site-header.scrolled { box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1300px; margin: 0 auto; height: 110px; }
+        .header-logo { height: 130px; width: auto; }
+        .nav-menu { display: flex; list-style: none; gap: 2rem; }
+        .nav-menu a { color: var(--color-text); text-decoration: none; font-weight: 500; transition: color 0.3s ease; position: relative; padding-bottom: 5px; }
+        .nav-menu a:hover { color: var(--color-orange); }
+        .nav-menu a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background-color: var(--color-orange); transition: width 0.3s ease; }
+        .nav-menu a:hover::after { width: 100%; }
+
+        /* --- MENU MOBILE --- */
+        .mobile-menu-toggle { display: none; background: none; border: none; color: var(--color-text); font-size: 1.8rem; cursor: pointer; z-index: 1002; }
+        .mobile-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-white); z-index: 1001; display: flex; flex-direction: column; justify-content: center; align-items: center; transform: translateX(100%); transition: transform 0.4s ease-in-out; }
+        .mobile-menu-overlay.active { transform: translateX(0); }
+        .mobile-menu-close { position: absolute; top: 2rem; right: 2rem; background: none; border: none; color: var(--color-text); font-size: 2.5rem; cursor: pointer; }
+        .mobile-menu-logo { height: 150px; width: auto; margin-bottom: 3rem; }
+        .mobile-nav-menu { list-style: none; text-align: center; }
+        .mobile-nav-menu li { margin: 1.8rem 0; }
+        .mobile-nav-menu a { color: var(--color-text); text-decoration: none; font-size: 1.8rem; font-weight: 500; }
+
+        /* --- BOTÕES FLUTUANTES --- */
+        #backToTopBtn { position: fixed; bottom: 90px; right: 20px; z-index: 999; background-color: var(--color-orange); color: white; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 22px; cursor: pointer; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, transform 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: flex; justify-content: center; align-items: center; }
+        #backToTopBtn.show { opacity: 1; visibility: visible; }
+        #backToTopBtn:hover { transform: scale(1.1); }
+        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; z-index: 998; background: #25D366; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: transform 0.3s ease; animation: pulse 2s infinite; text-decoration: none; }
+        .whatsapp-float i { font-size: 28px; color: white; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
+
+        /* --- ESTILOS GERAIS DE SEÇÃO --- */
+        section { padding: 6rem 2rem; position: relative; }
+        .section-title-wrapper { text-align: center; margin-bottom: 4rem; position: relative; z-index: 2; }
+        .section-title { font-size: clamp(2.2rem, 5vw, 2.8rem); font-weight: 700; color: var(--color-text); position: relative; display: inline-block; padding-bottom: 15px; }
+        .section-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background-color: var(--color-orange); }
+        .container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+
+        /* --- SEÇÃO HERO --- */
+        .hero-section { min-height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--color-white); overflow: hidden; }
+        .hero-slider-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .hero-slider { display: flex; height: 100%; transition: transform 0.5s ease-in-out; }
+        .hero-slide { flex: 0 0 100%; height: 100%; position: relative; }
+        .hero-slide img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-slide::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
+        .hero-dots { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 3; }
+        .hero-dot { width: 12px; height: 12px; border-radius: 50%; background-color: rgba(255,255,255,0.5); cursor: pointer; transition: background-color 0.3s ease; }
+        .hero-dot.active { background-color: var(--color-white); }
+        .hero-content { position: relative; z-index: 2; padding: 6rem 2rem 0; }
+        .hero-content h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; margin-bottom: 0.5rem; }
+        .hero-content .subtitle { font-size: clamp(1.2rem, 2.5vw, 1.5rem); font-weight: 300; color: var(--color-orange); margin-bottom: 1.5rem; }
+        .hero-content p { font-size: clamp(1rem, 2vw, 1.1rem); max-width: 600px; margin: 0 auto 2.5rem auto; }
+        .cta-button { display: inline-block; padding: 0.8rem 2.5rem; background-color: var(--color-orange); color: var(--color-white); text-decoration: none; font-weight: 600; border: 2px solid var(--color-orange); border-radius: 5px; transition: background-color 0.3s ease, color 0.3s ease; }
+        .cta-button:hover { background-color: transparent; color: var(--color-orange); }
+
+        /* --- LIGHTBOX (ZOOM IMAGEM) --- */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 1rem;
+        }
+        .lightbox.show { opacity: 1; visibility: visible; }
+        .lightbox-content { position: relative; }
+        .lightbox-content img {
+            display: block;
+            object-fit: contain;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            z-index: 10001;
+            line-height: 1;
+        }
+
+        /* --- SEÇÃO SOBRE MARIA --- */
+        .about-section { background-color: var(--color-white); }
+        .about-container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: center; }
+        .about-image img { width: 100%; max-width: 400px; height: 400px; border-radius: 50%; object-fit: cover; display: block; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .about-text .section-title-wrapper { text-align: left; margin-bottom: 1.5rem; }
+        .about-text .section-title::after { left: 0; transform: translateX(0); }
+        .about-text p { color: #666; margin-bottom: 1rem; }
+
+        /* --- SEÇÃO PROJETOS (GALERIA MASONRY) --- */
+        .portfolio-gallery { padding: 6rem 2rem; background-color: var(--color-light-gray); }
+        .gallery-columns { columns: 3; column-gap: 1.5rem; }
+        .gallery-item { margin-bottom: 1.5rem; break-inside: avoid; position: relative; overflow: hidden; border-radius: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; }
+        .gallery-item img { width: 100%; height: auto; display: block; transition: transform 0.4s ease; }
+        .gallery-item:hover img { transform: scale(1.05); }
+
+        /* --- SEÇÕES COM FUNDO DE IMAGEM --- */
+        .background-image-section { background-size: cover; background-position: center center; background-attachment: fixed; color: var(--color-white); }
+        .about-bj-section { background-image: linear-gradient(rgba(17,17,17,0.85), rgba(17,17,17,0.85)), url('img/murilo4.png'); }
+        .background-image-section .section-title { color: var(--color-white); }
+        .background-image-section .section-title::after { background-color: var(--color-orange); }
+        .about-bj-section p { max-width: 800px; margin: 0 auto; text-align: center; font-size: 1.1rem; color: #ccc; }
+        
+        /* --- NOVA GALERIA STICKY (Trabalhos BJ) --- */
+        .gallery-sticky-section { padding: 0 2rem; background-image: none; background-color: var(--color-light-gray); }
+        .gallery-sticky-section .section-title { color: var(--color-text); }
+        .gallery-sticky-container { display: flex; gap: 1rem; max-width: 1400px; margin: 0 auto; }
+        .gallery-column { flex: 1; display: flex; flex-direction: column; gap: 1rem; padding-top: 6rem; padding-bottom: 6rem; }
+        .gallery-column.sticky { position: sticky; top: 160px; height: 100vh; justify-content: center; }
+        .gallery-column figure { margin: 0; width: 100%; cursor: pointer; }
+        .gallery-column img { width: 100%; height: auto; object-fit: cover; border-radius: 5px; }
+        .gallery-column.sticky img { height: 100%; max-height: 30vh; }
+        
+        /* --- NOVA SEÇÃO SAIBA MAIS --- */
+        .saiba-mais-section { background-color: var(--color-dark-gray); color: var(--color-white); text-align: center; }
+        .saiba-mais-section h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 600; margin-bottom: 1.5rem; }
+        .saiba-mais-section p { max-width: 600px; margin: 0 auto 2.5rem auto; color: #ccc; }
+
+        /* --- NOVA SEÇÃO DE CONTATO --- */
+        .contact-section { background-color: var(--color-white); }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; max-width: 1100px; margin: 0 auto; background: var(--color-white); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .contact-info-panel { padding: 3rem; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('img/murilo2.png') no-repeat center center/cover; color: var(--color-white); display: flex; flex-direction: column; justify-content: center; }
+        .contact-info-panel h2 { font-size: 2rem; font-weight: 700; margin-bottom: 2rem; }
+        .contact-info-item { display: flex; align-items: center; gap: 15px; margin-bottom: 1.5rem; font-size: 1rem; }
+        .contact-info-item i { font-size: 1.5rem; color: var(--color-orange); }
+        .contact-form-panel { padding: 3rem; }
+        .contact-form-panel h2 { font-size: 1.8rem; font-weight: 600; color: var(--color-text); margin-bottom: 2rem; }
+        .new-contact-form .form-group { margin-bottom: 1.5rem; }
+        .new-contact-form .form-input { width: 100%; padding: 0.8rem 1rem; border: 1px solid #ccc; border-radius: 5px; font-family: var(--font-body); font-size: 1rem; transition: border-color 0.3s ease; }
+        .new-contact-form .form-input:focus { outline: none; border-color: var(--color-orange); }
+        .new-contact-form textarea.form-input { resize: vertical; min-height: 120px; }
+        .new-contact-form .submit-button { width: 100%; padding: 1rem; border: none; border-radius: 5px; background-color: var(--color-orange); color: var(--color-white); font-size: 1rem; font-weight: 600; cursor: pointer; transition: background-color 0.3s ease; }
+        .new-contact-form .submit-button:hover { background-color: #d8601c; }
+
+        /* --- NOVA SEÇÃO MAPA --- */
+        .map-section { background-color: var(--color-light-gray); }
+        .map-container { position: relative; width: 100%; overflow: hidden; padding-top: 45%; }
+        .map-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        /* --- SEÇÃO FAQ --- */
+        .faq-section { overflow: hidden; padding: 0; }
+        .faq-bg-container { background: #181c21; width: 100%; margin: 0; display: flex; align-items: stretch; justify-content: stretch; padding: 6rem 2rem; position: relative; }
+        .pattern-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; background: repeating-linear-gradient(135deg, #232526 0px, #232526 60px, #23252699 70px, #414345 130px ); }
+        .cube-svg { position: absolute; width: 200%; height: 200%; left: -30%; top: -20%; background: transparent; opacity: 0.7; z-index: 1; animation: cubeMove 18s linear infinite alternate; will-change: transform; }
+        @keyframes cubeMove { from { transform: translateY(0) scale(1); } to { transform: translateY(-20%) scale(1.02) rotate(1deg); } }
+        .faq-container { max-width: 800px; margin: 0 auto; z-index: 2; position: relative; }
+        .faq-item { border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding: 1.5rem 0; }
+        .faq-question { display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 1.2rem; font-weight: 500; color: var(--color-white); }
+        .faq-question i { transition: transform 0.3s ease; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out, padding 0.4s ease; color: rgba(255, 255, 255, 0.8); }
+        .faq-item.active .faq-answer { max-height: 200px; padding-top: 1rem; }
+        .faq-item.active .faq-question i { transform: rotate(45deg); }
+
+        /* --- FOOTER (RODAPÉ) --- */
+        .site-footer { background-color: var(--color-black); color: #a0a0a0; padding: 3rem 2rem; text-align: center; }
+        .footer-social { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .footer-social a { color: var(--color-white); font-size: 1.5rem; transition: color 0.3s ease, transform 0.3s ease; }
+        .footer-social a:hover { color: var(--color-orange); transform: scale(1.1); }
+        .footer-bottom p, .footer-bottom a { font-size: 0.9rem; color: #a0a0a0; text-decoration: none; }
+        .footer-bottom a:hover { color: var(--color-white); }
+        
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 992px) {
+            .about-container { grid-template-columns: 1fr; text-align: center; }
+            .about-image { grid-row: 1; margin-bottom: 2rem; }
+            .about-text .section-title-wrapper { text-align: center; }
+            .about-text .section-title::after { left: 50%; transform: translateX(-50%); }
+            .gallery-columns { columns: 2; }
+            .gallery-sticky-container { flex-direction: column; }
+            .gallery-sticky-container .gallery-column { padding-top: 1rem; padding-bottom: 1rem; }
+            .gallery-column.sticky { position: static; height: auto; }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .header-content { height: 110px; }
+            .header-logo { height: 100px; }
+            .nav-menu { display: none; }
+            .mobile-menu-toggle { display: block; }
+            section { padding: 4rem 1.5rem; }
+            .hero-section { padding-top: 110px; }
+            .hero-content { padding: 2rem 1.5rem 0; }
+            .gallery-columns { columns: 1; }
+            .about-bj-section { background-attachment: scroll; }
+            .faq-bg-container {padding: 4rem 1.5rem;}
+            .contact-info-panel, .contact-form-panel { padding: 2rem; }
+            .map-container { padding-top: 75%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="img/bj_logo.png" alt="Logo BJ Esquadrias" class="preloader-logo" decoding="async">
+    </div>
+
+    <header class="site-header">
+        <div class="header-content">
+            <a href="#home"><img src="img/bj_logo.png" alt="Logo BJ Esquadrias" class="header-logo" decoding="async"></a>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#sobre-maria">Sobre Mim</a></li>
+                    <li><a href="#projetos-maria">Projetos</a></li>
+                    <li><a href="#sobre-bj">A Empresa</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                    <li><a href="#localizacao">Localização</a></li>
+                </ul>
+            </nav>
+            
+            <button class="mobile-menu-toggle" aria-label="Abrir Menu"> <i class="fa-solid fa-bars"></i> </button>
+        </div>
+    </header>
+
+    <div class="mobile-menu-overlay">
+        <button class="mobile-menu-close" aria-label="Fechar Menu"><i class="fa-light fa-xmark"></i></button>
+        <img src="img/bj_logo.png" alt="Logo BJ Esquadrias" class="mobile-menu-logo" decoding="async">
+        <nav>
+            <ul class="mobile-nav-menu">
+                <li><a href="#home">Início</a></li>
+                <li><a href="#sobre-maria">Sobre Mim</a></li>
+                <li><a href="#projetos-maria">Projetos</a></li>
+                <li><a href="#sobre-bj">A Empresa</a></li>
+                <li><a href="#contato">Contato</a></li>
+                <li><a href="#localizacao">Localização</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <button id="backToTopBtn" title="Voltar ao topo"><i class="fa-solid fa-arrow-up"></i></button>
+    <a href="https://wa.me/5511942069781" class="whatsapp-float" target="_blank" aria-label="WhatsApp"> <i class="fa-brands fa-whatsapp"></i> </a>
+    
+    <main>
+        <section class="hero-section" id="home">
+            <div class="hero-slider-container">
+                <div class="hero-slider">
+                    <div class="hero-slide"><img src="img_geral/walison1.png" alt="Projeto em destaque atricia_bj1.png" alt="Projeto em destaque 1" loading="eager" decoding="async"></div>
+                    <div class="hero-slide"><img src="img_geral/walison10.png" alt="Projeto em destaque 2" loading="lazy" decoding="async"></div>
+                    <div class="hero-slide"><img src="img_geral/walison4.png" alt="Projeto em destaque 3" loading="lazy" decoding="async"></div>
+                    <div class="hero-slide"><img src="img_geral/walison7.png" alt="Projeto em destaque 1" loading="eager" decoding="async"></div>
+                    <div class="hero-slide"><img src="img_geral/walison9.png" alt="Projeto em destaque 2" loading="lazy" decoding="async"></div>
+                    <div class="hero-slide"><img src="img_geral/walison3.png" alt="Projeto em destaque 3" loading="lazy" decoding="async"></div>
+                </div>
+            </div>
+            <div class="hero-content">
+                <h1 class="animate-on-scroll">Walison</h1>
+                <p class="subtitle animate-on-scroll delay-1">Vendedor Técnico</p>
+                <p class="animate-on-scroll delay-2">Especialista em soluções personalizadas de esquadrias de alumínio para transformar seu projeto em realidade.</p>
+                <a href="#contato" class="cta-button animate-on-scroll delay-3">Fale Comigo</a>
+            </div>
+            <div class="hero-dots">
+            </div>
+        </section>
+
+        <section class="about-section" id="sobre-maria">
+            <div class="container about-container">
+                <div class="about-image animate-on-scroll">
+                    <img src="img_geral/walison1.png" alt="Foto do Walinson" loading="lazy" decoding="async">
+                </div>
+                <div class="about-text">
+                    <div class="section-title-wrapper animate-on-scroll"> <h2 class="section-title">Sobre Mim</h2> </div>
+                    <p class="animate-on-scroll delay-1">Olá! Sou o Walinson. Com anos de experiência na área comercial, minha paixão é entender as necessidades de cada cliente e oferecer um atendimento de excelência, sempre com foco em construir relacionamentos de confiança e resultados duradouros.</p>
+                    <p class="animate-on-scroll delay-2">Acredito que um bom atendimento vai além da venda: ele começa na escuta, passa pela atenção aos detalhes e se consolida no cuidado com cada etapa do processo. Meu compromisso é simples: atender bem para atender sempre.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="portfolio-gallery" id="projetos-maria">
+            <div class="container">
+                <div class="section-title-wrapper animate-on-scroll"> <h2 class="section-title">Meus Projetos em Destaque</h2> </div>
+                <div class="gallery-columns">
+                    <div class="gallery-item animate-on-scroll"><img src="img_geral/walison1.png" alt="Projeto 1" loading="lazy" decoding="async"></div>
+                    <div class="gallery-item animate-on-scroll delay-1"><img src="img_geral/walison2.png" alt="Projeto 2" loading="lazy" decoding="async"></div>
+                    <div class="gallery-item animate-on-scroll delay-2"><img src="img_geral/walison3.png" alt="Projeto 3" loading="lazy" decoding="async"></div>
+                    <div class="gallery-item animate-on-scroll"><img src="img_geral/walison4.png" alt="Projeto 4" loading="lazy" decoding="async"></div>
+                    <div class="gallery-item animate-on-scroll delay-1"><img src="img_geral/walison5.png" alt="Projeto 5" loading="lazy" decoding="async"></div>
+                    <div class="gallery-item animate-on-scroll delay-2"><img src="img_geral/walison6.png" alt="Projeto 6" loading="lazy" decoding="async"></div>
+                    <div class="gallery-item animate-on-scroll"><img src="img_geral/walison7.png" alt="Projeto 7" loading="lazy" decoding="async"></div>
+                    <div class="gallery-item animate-on-scroll"><img src="img_geral/walison8.png" alt="Projeto 7" loading="lazy" decoding="async"></div>
+                    <div class="gallery-item animate-on-scroll"><img src="img_geral/walison9.png" alt="Projeto 7" loading="lazy" decoding="async"></div>
+                    <div class="gallery-item animate-on-scroll"><img src="img_geral/walison10.png" alt="Projeto 7" loading="lazy" decoding="async"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-bj-section background-image-section" id="sobre-bj">
+            <div class="container">
+                <div class="section-title-wrapper animate-on-scroll"> <h2 class="section-title">Sobre a BJ Esquadrias</h2> </div>
+                <p class="animate-on-scroll delay-1">Apresentamos nossa empresa especializada na fabricação e instalação de esquadrias de alumínio, ACM e produtos relacionados. Atendemos em Mogi das Cruzes, todo o Alto Tietê e litoral. Com mais de 20 ANOS de experiência profissional, atuamos no estado de São Paulo, participando ativamente na elaboração e execução de inúmeros projetos residenciais, comerciais e obras públicas. Oferecemos suporte técnico completo para arquitetos, engenheiros e construtores, auxiliando na escolha da linha mais adequada para cada obra.</p>
+            </div>
+        </section>
+        
+        <section class="gallery-sticky-section" id="projetos-gerais">
+            <div class="section-title-wrapper" style="padding-top: 6rem;">
+                <h2 class="section-title animate-on-scroll">Trabalhos da BJ Esquadrias</h2>
+            </div>
+            <div class="gallery-sticky-container">
+                <div class="gallery-column">
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/maria1.png" alt="Projeto Geral 1" loading="lazy" decoding="async"></figure>
+                    <figure class="animate-on-scroll gallery-item"><img src="img/murilo4.png" alt="Projeto Geral 2" loading="lazy" decoding="async"></figure>
+                </div>
+                <div class="gallery-column sticky">
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/maria3.png" alt="Projeto Geral 3" loading="lazy" decoding="async"></figure>
+                    <figure class="animate-on-scroll gallery-item"><img src="img/murilo9.png" alt="Projeto Geral 4" loading="lazy" decoding="async"></figure>
+                </div>
+                <div class="gallery-column">
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/maria2.png" alt="Projeto Geral 5" loading="lazy" decoding="async"></figure>
+                    <figure class="animate-on-scroll gallery-item"><img src="img/murilo8.png" alt="Projeto Geral 6" loading="lazy" decoding="async"></figure>
+                </div>
+                <div class="gallery-column">
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/maria4.png" alt="Projeto Geral 1" loading="lazy" decoding="async"></figure>
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/maria5.png" alt="Projeto Geral 2" loading="lazy" decoding="async"></figure>
+                </div>
+                <div class="gallery-column sticky">
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/maria10.png" alt="Projeto Geral 3" loading="lazy" decoding="async"></figure>
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/maria11.png" alt="Projeto Geral 4" loading="lazy" decoding="async"></figure>
+                </div>
+                <div class="gallery-column">
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/murilo10.png" alt="Projeto Geral 5" loading="lazy" decoding="async"></figure>
+                    <figure class="animate-on-scroll gallery-item"><img src="img/murilo7.png" alt="Projeto Geral 6" loading="lazy" decoding="async"></figure>
+                </div>
+                <div class="gallery-column">
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/patricia_bj1.png" alt="Projeto Geral 5" loading="lazy" decoding="async"></figure>
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/patricia_bj2.png" alt="Projeto Geral 6" loading="lazy" decoding="async"></figure>
+                </div>
+                <div class="gallery-column">
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/patricia_bj3.png" alt="Projeto Geral 5" loading="lazy" decoding="async"></figure>
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/patricia_bj5.png" alt="Projeto Geral 6" loading="lazy" decoding="async"></figure>
+                </div>
+                <div class="gallery-column">
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/douglas1.png" alt="Projeto Geral 5" loading="lazy" decoding="async"></figure>
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/douglas3.png" alt="Projeto Geral 6" loading="lazy" decoding="async"></figure>
+                </div>
+                <div class="gallery-column">
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/douglas5.png" alt="Projeto Geral 5" loading="lazy" decoding="async"></figure>
+                    <figure class="animate-on-scroll gallery-item"><img src="img_geral/douglas2.png" alt="Projeto Geral 6" loading="lazy" decoding="async"></figure>
+                </div>
+            </div>
+        </section>
+
+        <section class="saiba-mais-section" id="saiba-mais">
+            <div class="container animate-on-scroll">
+                <h2>Saiba Mais Vendo Nosso Site</h2>
+                <p>Veja nosso portfólio completo e conheça todas as nossas soluções em esquadrias de alumínio visitando nosso site institucional.</p>
+                <a href="https://bjesquadrias.com.br/" class="cta-button" target="_blank" rel="noopener noreferrer">Visitar Site da Empresa</a>
+            </div>
+        </section>
+
+        <section class="contact-section" id="contato">
+            <div class="container animate-on-scroll">
+                <div class="contact-grid">
+                    <div class="contact-info-panel">
+                        <h2>Entre em Contato</h2>
+                        <div class="contact-info-item">
+                            <i class="fa-brands fa-whatsapp"></i>
+                            <span>55 11 94206-9781</span>
+                        </div>
+                        <div class="contact-info-item">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>comercial@bjesquadrias.com.br</span>
+                        </div>
+                         <div class="contact-info-item">
+                            <i class="fa-solid fa-map-marker-alt"></i>
+                            <span>Mogi das Cruzes, São Paulo</span>
+                        </div>
+                    </div>
+                    <div class="contact-form-panel">
+                        <h2>Solicite um Orçamento</h2>
+                        <form id="contactForm" class="new-contact-form">
+                            <div class="form-group">
+                                <input class="form-input" type="text" name="name" placeholder="Seu Nome" required>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-input" type="email" name="email" placeholder="Seu E-mail" required>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-input" type="tel" name="phone" placeholder="Seu Telefone (Opcional)">
+                            </div>
+                             <div class="form-group">
+                                <textarea class="form-input" name="message" placeholder="Sua Mensagem" required></textarea>
+                            </div>
+                            <button class="submit-button" type="submit">Enviar via WhatsApp</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="map-section" id="localizacao">
+               <div class="container">
+                <div class="section-title-wrapper animate-on-scroll"> <h2 class="section-title">Onde nos Encontrar</h2> </div>
+                <div class="map-container animate-on-scroll delay-1">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3658.237847332463!2d-46.205402299999996!3d-23.5239463!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cdd808c219a4b5%3A0x6d94e98c6b1369f0!2sBJ%20ESQUADRIAS%20DE%20ALUMINIO!5e0!3m2!1spt-BR!2sbr!4v1759255228462!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>                </div>
+               </div>
+        </section>
+
+        <section class="faq-section" id="faq">
+            <div class="faq-bg-container">
+                <div class="pattern-bg">
+                    <svg preserveAspectRatio="xMidYMid slice" height="100%" width="100%" class="cube-svg" viewBox="0 0 120 104">
+                        <defs>
+                            <linearGradient y2="100%" x2="100%" y1="0%" x1="0%" id="cube-dark">
+                                <stop stop-color="#232526" offset="0%"></stop>
+                                <stop stop-color="#414345" offset="100%"></stop>
+                            </linearGradient>
+                            <linearGradient y2="0%" x2="100%" y1="100%" x1="0%" id="cube-mid">
+                                <stop stop-color="#F37A20" offset="0%"></stop> <stop stop-color="#d8601c" offset="100%"></stop>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="container">
+                    <div class="section-title-wrapper animate-on-scroll"> <h2 class="section-title" style="color:var(--color-white);">Perguntas Frequentes</h2> </div>
+                    <div class="faq-container animate-on-scroll delay-1">
+                        <div class="faq-item">
+                            <div class="faq-question"> <span>Quais tipos de esquadrias vocês fabricam?</span> <i class="fa-solid fa-plus"></i> </div>
+                            <div class="faq-answer"> <p>Fabricamos uma vasta gama de esquadrias de alumínio, incluindo portas, janelas, portões, guarda-corpos e fachadas, utilizando diversas linhas como Gold, Suprema, e outras, para atender a todos os tipos de projetos.</p> </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question"> <span>Vocês atendem apenas em Mogi das Cruzes?</span> <i class="fa-solid fa-plus"></i> </div>
+                            <div class="faq-answer"> <p>Nossa base é em Mogi das Cruzes, mas atendemos todo o Alto Tietê, o litoral paulista e diversas outras regiões do estado de São Paulo. Consulte-nos sobre a viabilidade para a sua localidade.</p> </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question"> <span>Oferecem suporte para arquitetos e engenheiros?</span> <i class="fa-solid fa-plus"></i> </div>
+                            <div class="faq-answer"> <p>Sim! Oferecemos suporte técnico completo para profissionais da área, auxiliando na especificação dos produtos, detalhamento técnico e na escolha da linha mais adequada para garantir o melhor desempenho e estética para cada obra.</p> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="site-footer">
+        <div class="footer-social">
+            <a href="https://www.instagram.com/bjesquadrias/" aria-label="Instagram" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://wa.me/5511942069781" aria-label="WhatsApp" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+        <div class="footer-bottom">
+            <p>Desenvolvido por <a href="https://wa.me/5511942069781?text=Ol%C3%A1!%20Vi%20o%20site%20da%20Maria%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20seus%20servi%C3%A7os%20de%20desenvolvimento." target="_blank">Lucas Cabral</a></p>
+        </div>
+    </footer>
+
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <img src="" alt="Imagem ampliada do projeto" id="lightboxImg">
+            <button class="lightbox-close" id="lightboxClose" aria-label="Fechar Imagem"><i class="fa-light fa-xmark"></i></button>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const body = document.body;
+        const preloader = document.getElementById('preloader');
+        const header = document.querySelector('.site-header');
+        const backToTopBtn = document.getElementById('backToTopBtn');
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const mobileClose = document.querySelector('.mobile-menu-close');
+        const mobileOverlay = document.querySelector('.mobile-menu-overlay');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxClose = document.getElementById('lightboxClose');
+
+        
+        // Lógica da Loading Page
+        if (preloader) {
+            body.classList.add('no-scroll');
+            setTimeout(() => {
+                preloader.classList.add('hidden');
+                body.classList.remove('no-scroll');
+            }, 3000);
+        }
+
+        // Lógica do Header e Botão "Voltar ao Topo"
+        window.addEventListener('scroll', () => {
+            if (header) {
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            }
+            if (backToTopBtn) {
+                backToTopBtn.classList.toggle('show', window.scrollY > 300);
+            }
+        });
+        
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+        
+        // Lógica do Menu Mobile
+        const toggleMenu = () => {
+            const isActive = mobileOverlay.classList.contains('active');
+            mobileOverlay.classList.toggle('active');
+            body.classList.toggle('no-scroll', !isActive);
+        };
+        
+        if (mobileToggle && mobileOverlay && mobileClose) {
+            mobileToggle.addEventListener('click', toggleMenu);
+            mobileClose.addEventListener('click', toggleMenu);
+        }
+        
+        // Animações de Scroll com Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Lógica do FAQ Accordion
+        document.querySelectorAll('.faq-item').forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const currentlyActive = document.querySelector('.faq-item.active');
+                if (currentlyActive && currentlyActive !== item) {
+                    currentlyActive.classList.remove('active');
+                }
+                item.classList.toggle('active');
+            });
+        });
+
+        // Lógica do Formulário de Contato para WhatsApp
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const formData = new FormData(contactForm);
+                const name = formData.get('name');
+                const email = formData.get('email');
+                const phone = formData.get('phone');
+                const message = formData.get('message');
+                const companyPhone = '5511969189995'; 
+
+                let whatsappMessage = `*Novo Pedido de Orçamento (Portfólio Maria)*\n\n`;
+                whatsappMessage += `*Nome:* ${name}\n`;
+                whatsappMessage += `*E-mail:* ${email}\n`;
+                if (phone) whatsappMessage += `*Telefone:* ${phone}\n`;
+                whatsappMessage += `\n*Mensagem:*\n${message}`;
+                
+                const whatsappUrl = `https://wa.me/${companyPhone}?text=${encodeURIComponent(whatsappMessage)}`;
+                
+                window.open(whatsappUrl, '_blank');
+                contactForm.reset();
+            });
+        }
+        
+        // Scroll Suave para âncoras
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (mobileOverlay.classList.contains('active')) {
+                    toggleMenu();
+                }
+
+                if (targetElement) {
+                    const header = document.querySelector('.site-header');
+                    const headerHeight = header ? header.offsetHeight : 0;
+                    const targetPosition = targetElement.offsetTop - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Lógica do Carrossel Hero
+        const heroSlider = document.querySelector('.hero-slider');
+        if (heroSlider) {
+            const slides = document.querySelectorAll('.hero-slide');
+            const dotsContainer = document.querySelector('.hero-dots');
+            let currentIndex = 0;
+            let startX = 0;
+            let isDragging = false;
+            let autoSlideInterval;
+
+            // Criar dots
+            slides.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.classList.add('hero-dot');
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => {
+                    goToSlide(i);
+                    resetAutoSlide();
+                });
+                dotsContainer.appendChild(dot);
+            });
+            const dots = document.querySelectorAll('.hero-dot');
+
+            const goToSlide = (index) => {
+                currentIndex = index;
+                heroSlider.style.transform = `translateX(-${currentIndex * 100}%)`;
+                dots.forEach(dot => dot.classList.remove('active'));
+                dots[currentIndex].classList.add('active');
+            };
+
+            const nextSlide = () => {
+                const newIndex = (currentIndex + 1) % slides.length;
+                goToSlide(newIndex);
+            };
+
+            const resetAutoSlide = () => {
+                clearInterval(autoSlideInterval);
+                autoSlideInterval = setInterval(nextSlide, 5000);
+            };
+
+            // Eventos de toque/arrastar
+            heroSlider.addEventListener('mousedown', e => { isDragging = true; startX = e.pageX - heroSlider.offsetLeft; });
+            heroSlider.addEventListener('touchstart', e => { isDragging = true; startX = e.touches[0].pageX - heroSlider.offsetLeft; });
+            
+            const handleMoveEnd = (endX) => {
+                if (!isDragging) return;
+                isDragging = false;
+                const movedBy = endX - startX;
+                if (movedBy < -50) { // Swipe left
+                    goToSlide((currentIndex + 1) % slides.length);
+                } else if (movedBy > 50) { // Swipe right
+                    goToSlide((currentIndex - 1 + slides.length) % slides.length);
+                }
+                resetAutoSlide();
+            };
+
+            heroSlider.addEventListener('mouseup', e => handleMoveEnd(e.pageX - heroSlider.offsetLeft));
+            heroSlider.addEventListener('mouseleave', () => isDragging = false);
+            heroSlider.addEventListener('touchend', e => handleMoveEnd(e.changedTouches[0].pageX - heroSlider.offsetLeft));
+
+            // Iniciar auto-slide
+            resetAutoSlide();
+        }
+
+        // Lógica do Lightbox
+        if (lightbox && lightboxImg && lightboxClose) {
+            document.querySelectorAll('.gallery-item, .gallery-column figure').forEach(item => {
+                item.addEventListener('click', () => {
+                    const imgSrc = item.querySelector('img').src;
+                    lightboxImg.src = imgSrc;
+                    lightbox.classList.add('show');
+                    body.classList.add('no-scroll');
+                });
+            });
+
+            const closeLightbox = () => { 
+                lightbox.classList.remove('show'); 
+                body.classList.remove('no-scroll'); 
+            };
+            
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => { 
+                if (e.target === lightbox) {
+                    closeLightbox();
+                } 
+            });
+        }
+    });
+    </script>
+</body>
+</html>
+
